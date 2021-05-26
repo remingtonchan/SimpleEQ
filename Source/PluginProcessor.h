@@ -98,7 +98,7 @@ private:
 	void update(ChainType& chain, const CoefficientType& coefficients)
     {
         updateCoefficients(chain.template get<Index>().coefficients, coefficients[Index]);
-        chain.template setByPassed<Index>(false);
+        chain.template setBypassed<Index>(false);
     }
 	
 	template<typename ChainType, typename CoefficientType>
