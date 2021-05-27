@@ -132,6 +132,12 @@ void SimpleEQAudioProcessorEditor::resized()
     peakQualitySlider.setBounds(bounds);
 }
 
+void SimpleEQAudioProcessorEditor::parameterValueChanged(int parameterIndex, float newValue)
+{
+    parametersChanged.set(true);
+}
+
+
 std::vector<juce::Component*> SimpleEQAudioProcessorEditor::getComps()
 {
     return
