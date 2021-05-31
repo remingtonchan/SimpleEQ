@@ -330,7 +330,7 @@ void ResponseCurveComponent::resized()
 	for (auto gdB : gain)
 	{
         auto y = jmap(gdB, -24.f, 24.f, static_cast<float>(bottom), static_cast<float>(top));
-        g.setColour(gdB == 0.f ? Colour(250, 171, 5) : Colours::darkgreen);
+        g.setColour(gdB == 0.f ? Colour(250, 171, 5) : Colours::lightgrey);
         g.drawHorizontalLine(y, left, right);
 	}
 
@@ -380,19 +380,25 @@ void ResponseCurveComponent::resized()
         Rectangle<int> r;
         r.setSize(textWidth, fontHeight);
         r.setX(getWidth() - textWidth);
-        r.setCentre(r.getCentreX(), y); g.setColour(gdB == 0.f ? Colour(250, 171, 5) : Colours::lightgrey);
-
+        r.setCentre(r.getCentreX(), y);
+    	g.setColour(gdB == 0.f ? Colour(250, 171, 5) : Colours::lightgrey);
         g.drawFittedText(str, r, juce::Justification::centred, 1);
+
+        str.clear();
+        str << (gdB - 24.f);
+
+        r.setX(1);
+        textWidth = g.getCurrentFont().getStringWidth(str);
+        r.setSize(textWidth, fontHeight);
+        g.setColour(Colours::lightgrey);
+        g.drawFittedText(str, r, juce::Justification::centred, 1);
+
     }
 }
 
 juce::Rectangle<int> ResponseCurveComponent::getRenderArea()
 {
     auto bounds = getLocalBounds();
-
-    //bounds.reduce(10, //JUCE_LIVE_CONSTANT(5), 
-				//8 //JUCE_LIVE_CONSTANT(5)
-				//);
 
     bounds.removeFromTop(12);
     bounds.removeFromBottom(2);
@@ -409,7 +415,6 @@ juce::Rectangle<int> ResponseCurveComponent::getAnalysisArea()
     bounds.removeFromBottom(4);
     return bounds;
 }
-
 
 //==============================================================================
 SimpleEQAudioProcessorEditor::SimpleEQAudioProcessorEditor (SimpleEQAudioProcessor& p)
