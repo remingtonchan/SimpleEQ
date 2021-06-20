@@ -633,7 +633,10 @@ void SimpleEQAudioProcessorEditor::resized()
     analyzerEnabledArea.setWidth(100);
     analyzerEnabledArea.setX(5);
     analyzerEnabledArea.removeFromTop(2);
+
+    analyzerEnabledButton.setBounds(analyzerEnabledArea);
 	
+    bounds.removeFromTop(5);
 	
     float hRatio = 25.f / 100.f; // JUCE_LIVE_CONSTANT(33) / 100.f;
     auto responseArea = bounds.removeFromTop(bounds.getHeight() * hRatio);
