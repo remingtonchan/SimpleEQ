@@ -19,7 +19,7 @@ void LookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, i
 	
     g.setColour(enabled ? Colours::teal : Colours::darkgrey); // BG circle
     g.fillEllipse(bounds);
-    g.setColour(enabled ? Colours::orange.brighter() : Colours::darkgrey); // Circle line
+    g.setColour(enabled ? Colours::orange.brighter() : Colours::orange.darker()); // Circle line
     g.drawEllipse(bounds, 1.5f);
 
     if (auto* rswl = dynamic_cast<RotarySliderWithLabels*>(&slider))
@@ -42,8 +42,7 @@ void LookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, i
 
         g.fillPath(p);
 
-        g.setFont(Font(rswl->getTextHeight(), Font::bold));
-        //g.setFont(rswl->getTextHeight());
+        g.setFont(Font(rswl->getTextHeight(), enabled ? Font::bold : Font::plain));
         auto text = rswl->getDisplayString();
         auto strWidth = g.getCurrentFont().getStringWidth(text);
 
@@ -53,7 +52,7 @@ void LookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, i
         g.setColour(Colours::transparentBlack);
         g.fillRect(r);
 
-        g.setColour(enabled ? Colour(250, 171, 5) : Colours::transparentBlack);
+        g.setColour(enabled ? Colour(250, 171, 5) : Colour(250, 171, 5).darker());
         g.drawFittedText(text, r.toNearestInt(), juce::Justification::centred, 1);
     }
 }
@@ -88,14 +87,23 @@ void LookAndFeel::drawToggleButton(juce::Graphics& g, juce::ToggleButton& toggle
     }
     else if (auto* ab = dynamic_cast<AnalyzerButton*>(&toggleButton))
     {
-        auto color = toggleButton.getToggleState() ? Colour(250, 171, 5) : Colours::dimgrey;
+        /*g.setColour(Colour(172, 5, 250));
+        g.setColour(Colour(5, 250, 172));*/
+        auto enabled = toggleButton.getToggleState();
+        auto color = enabled ? Colour(250, 171, 5) : Colours::dimgrey;
 
         g.setColour(color);
 
         auto bounds = toggleButton.getLocalBounds();
         g.drawRect(bounds);
 
+        g.setColour(enabled ? Colour(172, 5, 250) : Colours::dimgrey);
         g.strokePath(ab->randomPath, PathStrokeType(1.f));
+    	if (enabled)
+    	{
+            g.setColour(enabled ? Colour(5, 250, 172) : Colours::dimgrey);
+            g.strokePath(ab->randomPathB, PathStrokeType(1.f));
+    	}
     }
 }
 
@@ -118,6 +126,8 @@ void RotarySliderWithLabels::paint(juce::Graphics& g)
     //g.drawRect(getLocalBounds());
     //g.setColour(Colours::yellow);
     //g.drawRect(sliderBounds);
+
+    auto enabled = this->isEnabled();
 	
 
     getLookAndFeel().drawRotarySlider(g, 
@@ -129,8 +139,8 @@ void RotarySliderWithLabels::paint(juce::Graphics& g)
     auto center = sliderBounds.toFloat().getCentre();
     auto radius = sliderBounds.getWidth() * 0.5f;
 
-    g.setColour(Colour(250, 171, 5));
-    g.setFont(Font(getTextHeight(), Font::plain));
+    g.setColour(enabled ? Colour(250, 171, 5) : Colours::dimgrey);
+    g.setFont(Font(getTextHeight(), enabled ? Font::bold : Font::plain));
 
     auto numChoices = labels.size();
 	for (int i = 0; i < numChoices; ++i)

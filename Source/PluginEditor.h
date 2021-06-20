@@ -277,9 +277,19 @@ struct AnalyzerButton : juce::ToggleButton
         {
             randomPath.lineTo(x, insetRect.getY() + insetRect.getHeight() * r.nextFloat());
         }
+
+        randomPathB.clear();
+
+        randomPathB.startNewSubPath(insetRect.getX(), insetRect.getY() + insetRect.getHeight() * r.nextFloat());
+
+        for (auto x = insetRect.getX() + 1; x < insetRect.getRight(); x += 2)
+        {
+            randomPathB.lineTo(x, insetRect.getY() + insetRect.getHeight() * r.nextFloat());
+        }
 	}
 
     juce::Path randomPath;
+    juce::Path randomPathB;
 };
 
 
