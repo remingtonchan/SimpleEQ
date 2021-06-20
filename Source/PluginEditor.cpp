@@ -53,7 +53,7 @@ void LookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, i
         g.setColour(Colours::transparentBlack);
         g.fillRect(r);
 
-        g.setColour(Colour(250, 171, 5));
+        g.setColour(enabled ? Colour(250, 171, 5) : Colours::transparentBlack);
         g.drawFittedText(text, r.toNearestInt(), juce::Justification::centred, 1);
     }
 }
@@ -634,6 +634,7 @@ SimpleEQAudioProcessorEditor::SimpleEQAudioProcessorEditor (SimpleEQAudioProcess
         {
             auto enabled = comp->analyzerEnabledButton.getToggleState();
             comp->responseCurveComponent.toggleAnalysisEnablement(enabled);
+        }
     };
 	
     setSize (600, 480);
